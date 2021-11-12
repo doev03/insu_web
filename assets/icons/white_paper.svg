@@ -1,0 +1,15 @@
+<svg width="611" height="433" viewBox="0 0 611 433" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_116_161)">
+<rect y="9.99935" width="297.116" height="436.289" rx="50" transform="matrix(0.866044 0.499967 -0.866044 0.499967 374.425 68.3582)" fill="#97A0F6" stroke="#2F2F2F" stroke-width="20"/>
+<rect y="9.99935" width="297.116" height="436.289" rx="50" transform="matrix(0.866044 0.499967 -0.866044 0.499967 374.425 -12)" fill="#E1E3F5" stroke="#2F2F2F" stroke-width="20"/>
+<rect width="88.4744" height="18.8878" rx="9.4439" transform="matrix(0.866044 0.499967 -0.866044 0.499967 405.368 74.4502)" fill="#333333"/>
+<rect width="207.766" height="18.8878" rx="9.4439" transform="matrix(0.866044 0.499967 -0.866044 0.499967 279.672 87.3728)" fill="#333333"/>
+<rect width="207.766" height="18.8878" rx="9.4439" transform="matrix(0.866044 0.499967 -0.866044 0.499967 248.679 105.266)" fill="#333333"/>
+<rect width="146.132" height="18.8878" rx="9.4439" transform="matrix(0.866044 0.499967 -0.866044 0.499967 244.374 138.566)" fill="#333333"/>
+</g>
+<defs>
+<clipPath id="clip0_116_161">
+<rect width="611" height="433" fill="white"/>
+</clipPath>
+</defs>
+</svg>
