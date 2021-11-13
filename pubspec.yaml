@@ -14,6 +14,7 @@ dependencies:
   provider: ^6.0.1
   flutter_svg: ^0.22.0
   rect_getter: ^1.0.0
+  dhttpd: ^4.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
