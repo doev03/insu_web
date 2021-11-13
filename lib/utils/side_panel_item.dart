@@ -35,7 +35,7 @@ class _SidePanelItemState extends State<SidePanelItem> {
         icon = SvgPicture.asset(widget.icon);
         break;
       default:
-        icon = Image.asset(widget.icon);
+        icon = Image.asset(widget.icon, );
     }
 
     return Padding(
