@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insu_web/config.dart';
+import 'package:insu_web/core/constants/colors.dart';
+
+import '../core/app_navigator.dart';
 
 class SidePanelItem extends StatefulWidget {
   const SidePanelItem({
@@ -8,17 +11,19 @@ class SidePanelItem extends StatefulWidget {
     required this.onTap,
     required this.icon,
     required this.title,
-    this.height = 50.0,
+    this.height = 35.0,
     this.collapsedWidth = AppConfig.panelCollapsedWidth,
     this.width = AppConfig.panelExpandedWidth,
+    required this.pageName,
   }) : super(key: key);
 
-  final GestureTapCallback onTap;
+  final Function(BuildContext context) onTap;
   final String icon;
   final String title;
   final double height;
   final double collapsedWidth;
   final double width;
+  final String pageName;
 
   @override
   _SidePanelItemState createState() => _SidePanelItemState();
@@ -27,10 +32,23 @@ class SidePanelItem extends StatefulWidget {
 class _SidePanelItemState extends State<SidePanelItem> with TickerProviderStateMixin {
   late AnimationController animationController;
 
+  void _navigatorListener() {
+    if (AppNavigator.currentRouteName.value == widget.pageName)
+      setState(() {});
+    else if (AppNavigator.prevRouteName.value == widget.pageName) setState(() {});
+  }
+
   @override
   void initState() {
+    AppNavigator.currentRouteName.addListener(_navigatorListener);
     animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 100));
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    AppNavigator.currentRouteName.removeListener(_navigatorListener);
+    super.dispose();
   }
 
   @override
@@ -39,6 +57,11 @@ class _SidePanelItemState extends State<SidePanelItem> with TickerProviderStateM
     if (widget.icon.length > 3) {
       iconType = widget.icon.substring(widget.icon.length - 3, widget.icon.length);
     }
+
+    final pageName = AppNavigator.currentRouteName.value;
+    final isSelected = pageName == widget.pageName;
+
+    final Color iconColor = isSelected ? AppColors.selectedIcon : AppColors.icon;
 
     Widget icon;
     switch (iconType) {
@@ -54,6 +77,7 @@ class _SidePanelItemState extends State<SidePanelItem> with TickerProviderStateM
           allowDrawingOutsideViewBox: true,
           excludeFromSemantics: true,
           cacheColorFilter: true,
+          color: iconColor,
         );
         break;
       default:
@@ -64,18 +88,21 @@ class _SidePanelItemState extends State<SidePanelItem> with TickerProviderStateM
           excludeFromSemantics: true,
           isAntiAlias: true,
           matchTextDirection: true,
+          color: iconColor,
         );
     }
 
     return GestureDetector(
-      onTap: widget.onTap,
+      onTap: () {
+        if (!isSelected) widget.onTap(context);
+      },
       child: MouseRegion(
         cursor: SystemMouseCursors.click,
         onEnter: (event) {
-          animationController.forward();
+          if (!isSelected) animationController.forward();
         },
         onExit: (event) {
-          animationController.reverse();
+          if (!isSelected) animationController.reverse();
         },
         child: AnimatedBuilder(
           animation: animationController,
@@ -92,7 +119,7 @@ class _SidePanelItemState extends State<SidePanelItem> with TickerProviderStateM
                     height: widget.height,
                     alignment: Alignment.center,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 10, right: 10),
+                      padding: EdgeInsets.only(left: 15, right: 15),
                       child: icon,
                     ),
                   ),

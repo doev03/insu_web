@@ -2,9 +2,11 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:insu_web/config.dart';
+import 'package:insu_web/core/constants/colors.dart';
 
+import '../core/app_navigator.dart';
+import 'logo_button.dart';
 import 'side_panel_item.dart';
 
 class SidePanel extends StatefulWidget {
@@ -61,6 +63,8 @@ class SidePanelState extends State<SidePanel> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final pageName = AppNavigator.currentRouteName.value;
+
     return Align(
       alignment: Alignment.topLeft,
       child: AnimatedBuilder(
@@ -78,12 +82,22 @@ class SidePanelState extends State<SidePanel> with TickerProviderStateMixin {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: widget.collapsedWidth),
-                      SizedBox(height: widget.collapsedWidth),
+                      SizedBox(height: 70),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisSize: MainAxisSize.min,
                         children: widget.items!,
+                      ),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () {
+                            if (isCollapsed) {
+                              open();
+                            } else {
+                              close();
+                            }
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -96,7 +110,7 @@ class SidePanelState extends State<SidePanel> with TickerProviderStateMixin {
                         icon: AnimatedIcon(
                           progress: animation,
                           icon: AnimatedIcons.menu_arrow,
-                          color: Colors.white,
+                          color: AppColors.icon,
                         ),
                         onPressed: () {
                           if (isCollapsed) {
@@ -117,12 +131,8 @@ class SidePanelState extends State<SidePanel> with TickerProviderStateMixin {
                       child: SizedBox(
                         width: 42.0 + 42 * animation.value,
                         height: 42.0,
-                        child: CustomPaint(
-                          painter: MakeCircle(offset: animation.value * MediaQuery.of(context).size.height, targetOffset: MediaQuery.of(context).size.height),
-                          child: Padding(
-                            padding: EdgeInsets.all(7),
-                            child: SvgPicture.asset('assets/icons/logo.svg'),
-                          ),
+                        child: LogoButton(
+                          animation: animation,
                         ),
                       ),
                     ),
@@ -153,29 +163,4 @@ class CustomDrawerClipper extends CustomClipper<Rect> {
   bool shouldReclip(covariant CustomClipper<Rect> oldClipper) {
     return true;
   }
-}
-
-class MakeCircle extends CustomPainter {
-  final double strokeWidth;
-  final StrokeCap strokeCap;
-  final double offset;
-  final double targetOffset;
-
-  MakeCircle({this.strokeCap = StrokeCap.square, this.strokeWidth = 3.0, this.offset = 0, required this.targetOffset});
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white.withOpacity((1.0 - (offset / targetOffset) * 2).clamp(0.0, 1.0))
-      ..strokeCap = StrokeCap.round
-      ..strokeWidth = strokeWidth
-      ..style = PaintingStyle.stroke;
-
-    final path = Path()..addOval(Rect.fromPoints(Offset(0 - offset, 0 - offset), Offset(size.width + offset, size.height + offset)));
-
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
 }
