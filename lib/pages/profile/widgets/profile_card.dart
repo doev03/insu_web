@@ -11,7 +11,7 @@ class ProfileCard extends StatelessWidget {
       height: 300,
       padding: EdgeInsets.all(50),
       decoration: BoxDecoration(
-        color: Colors.grey,
+        color: AppColors.card,
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
